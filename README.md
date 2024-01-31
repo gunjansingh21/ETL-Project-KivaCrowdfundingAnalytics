@@ -6,11 +6,11 @@ Kiva is an online crowdfunding organization that offers loan services to underse
 The loan dataset provided by kiva contains a set of information for each loan application: dollar value of loan funded on Kiva.org; total dollar amount of loan; loan activity type; sector of loan activity as shown to lenders; country name; name of location within country; repayment interval, which is the frequency at which lenders are scheduled to receive installments, and loan theme, as well as Kiva’s estimates as to the various geolocations in which a loan theme has been offered. This data is in CSV format; hence, you need to load the data into the database for storage. I used the SQL server database as the data source for the project.
 
 # Table of Contents
-1. Introduction to Azure Services
-2. Project Overview
-3. Data Architecture Flow Diagram
-4. Data Sources & Visualisations
-5. Pre-Requisites
+1. [Introduction to Azure Services](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/blob/main/README.md#introduction-to-azure-services-step-by-step)
+2. [Project Overview](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/blob/main/README.md#project-overiew)
+3. [Data Architecture Flow Diagram](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/blob/main/README.md#data-architecture-flow-diagram)
+4. [Data Sources & Visualisations](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/blob/main/README.md#data-sources-and-visualisations)
+5. [Pre-Requisites](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/blob/main/README.md#pre-requisites)
 
 # Introduction to Azure Services (Step by Step)
 
@@ -60,7 +60,7 @@ The loan dataset provided by kiva contains a set of information for each loan ap
 
 # Data Sources and Visualisations
 
-Data Source
+Data Source : **https://www.kaggle.com/datasets/kiva/data-science-for-good-kiva-crowdfunding**
 ![image](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/assets/29482753/632a1da9-34a8-4124-a4f8-aacc3d3a6303)
 
 Visualisation 1: **Top 10 Countires that got maximum number of times Loan**
@@ -101,7 +101,6 @@ Visualisation 12: **Top 10 Countries with low MPI (Multidimentional Poverty Inde
 
 Visualisation 13: **Top 10 sectors that got maximum amount of loan in India**
 ![image](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/assets/29482753/2814b288-67fc-45e3-a6cd-b27925cbe79b)
-
 
 # Pre-Requisites
 
