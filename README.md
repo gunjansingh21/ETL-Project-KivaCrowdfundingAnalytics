@@ -59,7 +59,7 @@ I'm unable to add the dataset here becuase of the size. The size of the dataset 
 
 # Data Architecture Flow Diagram
 
-![image](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/assets/29482753/e6fc0f9c-2f69-4525-a4ab-00bdc2ce4519)
+![image](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/assets/29482753/dbe7cb4d-aca0-46ff-b1aa-ff6061625a51)
 
 # Data Sources and Visualisations
 
