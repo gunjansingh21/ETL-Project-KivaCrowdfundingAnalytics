@@ -5,6 +5,8 @@ Kiva is an online crowdfunding organization that offers loan services to underse
 # Data
 The loan dataset provided by kiva contains a set of information for each loan application: dollar value of loan funded on Kiva.org; total dollar amount of loan; loan activity type; sector of loan activity as shown to lenders; country name; name of location within country; repayment interval, which is the frequency at which lenders are scheduled to receive installments, and loan theme, as well as Kiva’s estimates as to the various geolocations in which a loan theme has been offered. This data is in CSV format; hence, you need to load the data into the database for storage. I used the SQL server database as the data source for the project.
 
+I'm unable to add the dataset here becuase of the size. The size of the dataset is quite huge. Please use the link in DATA SOURCE section to download or refer to the dataset. 
+
 ![image](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/assets/29482753/632a1da9-34a8-4124-a4f8-aacc3d3a6303)
 
 # Table of Contents
