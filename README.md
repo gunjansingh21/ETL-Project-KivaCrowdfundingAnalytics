@@ -26,49 +26,31 @@ I'm unable to add the dataset here becuase of the size. The size of the dataset 
    - **SILVER**: This layer contains the data after the first level of transformations.
    - **GOLD**: This layer holds the data following the second level of transformations.
 
- - **Azure Databricks**: Azure Databricks is a fast, scalable, and collaborative analytics platform based on Apache Spark, provided by Microsoft Azure. It combines the power of Apache Spark with the ease of a fully managed cloud service.
+ - **Azure Databricks**: Azure Databricks is a fast, scalable, and collaborative analytics platform based on Apache Spark, provided by Microsoft Azure. It combines the power of Apache Spark with the ease of a fully managed cloud service. For data transformations, such as modifying table schemas and adjusting specific columns, we leverage Azure Databricks alongside PySpark. In this step, we utilize Azure Databricks built on Apache Spark, using PySpark to write our transformations in a notebook. Executing the notebook automatically spins up the Spark cluster, providing the necessary compute resources for our data transformations. Before proceeding with the transformations, it’s essential to ensure that your Databricks workspace has the required permissions to connect to the Azure Data Lake Storage (ADLS) Gen2. The transformed data is then stored in separate folders within the silver and gold containers, organized by respective table names.
 
-For data transformations, such as modifying table schemas and adjusting specific columns, we leverage Azure Databricks alongside PySpark. In this step, we utilize Azure Databricks built on Apache Spark, using PySpark to write our transformations in a notebook. Executing the notebook automatically spins up the Spark cluster, providing the necessary compute resources for our data transformations.
-
-Before proceeding with the transformations, it’s essential to ensure that your Databricks workspace has the required permissions to connect to the Azure Data Lake Storage (ADLS) Gen2. The transformed data is then stored in separate folders within the silver and gold containers, organized by respective table names.
-
- - **Azure Synapse Analytics** : We have utilized Azure Synapse Analytics to derive valuable insights from the transformed data and perform visualizations based on the data stored in the gold container. I created a lake database by accessing the files in ADLS Gen2. Once the database was established, I developed a notebook to conduct analytics on the data and create various charts and graphs.
-
-Azure Synapse Analytics is a scalable, cloud-based data warehousing solution from Microsoft and represents the next iteration of Azure SQL Data Warehouse. It offers a unified environment by integrating SQL data warehousing, big data analytics capabilities with Spark, and data integration technologies, facilitating seamless movement of data between these components and external sources.
-
-It's essential to ensure that the necessary roles and permissions are granted to your Synapse workspace, allowing it to access the storage account.
+ - **Azure Synapse Analytics** : We have utilized Azure Synapse Analytics to derive valuable insights from the transformed data and perform visualizations based on the data stored in the gold container. I created a lake database by accessing the files in ADLS Gen2. Once the database was established, I developed a notebook to conduct analytics on the data and create various charts and graphs. Azure Synapse Analytics is a scalable, cloud-based data warehousing solution from Microsoft and represents the next iteration of Azure SQL Data Warehouse. It offers a unified environment by integrating SQL data warehousing, big data analytics capabilities with Spark, and data integration technologies, facilitating seamless movement of data between these components and external sources. It's essential to ensure that the necessary roles and permissions are granted to your Synapse workspace, allowing it to access the storage account.
 
  - **Azure Key Valut** : We have utilized Azure Key Vault to securely manage and encrypt our secrets. Azure Key Vault is a cloud service that provides a secure repository for storing keys, passwords, certificates, and other sensitive information. Key vaults are created and managed through the Azure portal, making it a widely used solution for security management and data encryption.
 
 # Project Overiew
 
- - **Data Ingestion** - This marks the initial phase of our project, where we are transferring data from a SQL Server database to Azure Data Lake Storage Gen2. The data ingestion process was executed using Azure Data Factory. My objective for this project was to create a pipeline that would read all tables from the SQL Server database and load them into Azure Data Lake Gen2.
-
-To facilitate this, I established three storage containers—gold, silver, and bronze—in Azure Data Lake Storage Gen2. The bronze container is designed to store data directly from the ingestion process, with tables being moved from the source to the destination.
-
+ - **Data Ingestion** - This marks the initial phase of our project, where we are transferring data from a SQL Server database to Azure Data Lake Storage Gen2. The data ingestion process was executed using Azure Data Factory. My objective for this project was to create a pipeline that would read all tables from the SQL Server database and load them into Azure Data Lake Gen2. To facilitate this, I established three storage containers—gold, silver, and bronze—in Azure Data Lake Storage Gen2. The bronze container is designed to store data directly from the ingestion process, with tables being moved from the source to the destination.
 To read all the tables in the database, I employed a lookup activity that queries the SQL database to list the tables for ingestion. Following this, I implemented a ForEach activity in the pipeline to iterate over the results from the lookup activity, enabling the copying of each table. Within this ForEach loop, I created a Copy Data activity to transfer data from the source to the destination. I configured the source and destination to save the data as CSV files and specified dataset paths to ensure that each copied table is stored in its respective folder with a designated file name.
-
 The data ingestion pipeline reads and stores data from the SQL Server into the bronze container, retaining the raw format. After configuring the pipeline successfully, I utilized the debug option to test its functionality and verify that it operated without errors. Additionally, I used the "Add Trigger" option to run the pipeline immediately for testing purposes. As the pipeline is intended to fetch tables from the on-premises SQL Server each time it runs, every successful execution overwrites the existing folder in the bronze container. Consequently, at the conclusion of the data ingestion process, the data is now stored in the bronze container, ready for transformation. 
 
 ![image](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/assets/29482753/3041d2c9-06c2-4f9f-9a43-43094c68ac7f)
 
   - **Data Storage** - This is the subsequent step following data ingestion, utilizing Azure Data Lake Storage Gen2. For this, we have established three layers within the storage account:
 
-Bronze Layer: This layer contains data in its raw format.
-Silver Layer: This layer holds transformed data, including date type conversions and the removal of null values and duplicates.
-Gold Layer: This layer stores aggregated data, which may involve altering column names and data types.
+   - Bronze Layer: This layer contains data in its raw format.
+   - Silver Layer: This layer holds transformed data, including date type conversions and the removal of null values and duplicates.
+   - Gold Layer: This layer stores aggregated data, which may involve altering column names and data types.
 
-We configured our sink to be Azure Data Lake Storage Gen2, where the data is loaded into the bronze container in its original format. The silver container contains data resulting from level 1 transformations applied to the bronze container, while the gold container holds the cleaned and further transformed data sourced from the silver container.
+   We configured our sink to be Azure Data Lake Storage Gen2, where the data is loaded into the bronze container in its original format. The silver container contains data resulting from level 1 transformations applied to the bronze container, while the gold container     holds the cleaned and further transformed data sourced from the silver container.
 
 ![image](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/assets/29482753/f7845689-ebee-47e5-b330-d49a4141ac47)
 
-  - **Data Transformations** - After completing the preliminary data movement and successfully storing the data in the bronze container of our storage account, we proceed to the next step: transforming the data. Before doing so, we first create a compute cluster to enable various jobs to run in the notebooks.
-
-Once the cluster is set up, we utilize the fs utility under dbutils to mount the data from Azure Data Lake Storage Gen2 to the Databricks Workspace using a service principal. With the storage mounted on DBFS, we execute two levels of transformations.
-
-The first transformation level, Bronze_to_Silver, focuses on changing the date format from datetime to date type. This transformation is applied across all tables and columns that contain date data. The transformed data is then moved to the silver container.
-
-In the second transformation level, Silver_to_Gold, I change the column names to lowercase to ensure a consistent naming convention across the different tables. The transformed data is subsequently stored in separate folders within the gold container, each named according to the respective table.
+  - **Data Transformations** - After completing the preliminary data movement and successfully storing the data in the bronze container of our storage account, we proceed to the next step: transforming the data. Before doing so, we first create a compute cluster to enable various jobs to run in the notebooks. Once the cluster is set up, we utilize the fs utility under dbutils to mount the data from Azure Data Lake Storage Gen2 to the Databricks Workspace using a service principal. With the storage mounted on DBFS, we execute two levels of transformations. The first transformation level, Bronze_to_Silver, focuses on changing the date format from datetime to date type. This transformation is applied across all tables and columns that contain date data. The transformed data is then moved to the silver container. In the second transformation level, Silver_to_Gold, I change the column names to lowercase to ensure a consistent naming convention across the different tables. The transformed data is subsequently stored in separate folders within the gold container, each named according to the respective table.
 
 ![image](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/assets/29482753/b720dadd-5bcd-4638-9e7c-bdfcec851286)
 
@@ -76,13 +58,7 @@ In the second transformation level, Silver_to_Gold, I change the column names to
 
 ![image](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/assets/29482753/0586b5ae-4087-4e9c-927c-13bd4557e91d)
 
- - **Data Analytics** - Azure Synapse Analytics is a scalable, cloud-based data warehousing solution from Microsoft, representing the next iteration of Azure SQL Data Warehouse. It offers a unified environment by integrating SQL data warehousing, big data analytics capabilities with Spark, and data integration technologies, facilitating the movement of data between these components and external data sources. In this project, we are utilizing it for data warehousing and analytics purposes.
-
-First, I created a linked service to connect my Azure Data Lake Storage (ADLS) Gen2 to my Synapse Workspace. Once this connection was established, I created a lake database using the files from the gold container in the ADLS Gen2 storage account.
-
-After the database was set up, I wanted to conduct analytics on the clean data. To do this, I created an Apache Spark Pool, as a compute resource is required to run jobs or notebooks—this can be either a dedicated or serverless SQL pool or an Apache Spark Pool.
-
-Next, I developed a notebook for KivaCrowdfundingAnalytics and performed a series of analytics and visualizations on the data stored in the gold container. It's essential to ensure that the necessary roles and permissions are granted to your Synapse Workspace, enabling it to access the storage account.
+ - **Data Analytics** - Azure Synapse Analytics is a scalable, cloud-based data warehousing solution from Microsoft, representing the next iteration of Azure SQL Data Warehouse. It offers a unified environment by integrating SQL data warehousing, big data analytics capabilities with Spark, and data integration technologies, facilitating the movement of data between these components and external data sources. In this project, we are utilizing it for data warehousing and analytics purposes. First, I created a linked service to connect my Azure Data Lake Storage (ADLS) Gen2 to my Synapse Workspace. Once this connection was established, I created a lake database using the files from the gold container in the ADLS Gen2 storage account. After the database was set up, I wanted to conduct analytics on the clean data. To do this, I created an Apache Spark Pool, as a compute resource is required to run jobs or notebooks—this can be either a dedicated or serverless SQL pool or an Apache Spark Pool. Next, I developed a notebook for KivaCrowdfundingAnalytics and performed a series of analytics and visualizations on the data stored in the gold container. It's essential to ensure that the necessary roles and permissions are granted to your Synapse Workspace, enabling it to access the storage account.
 
 ![image](https://github.com/gunjansingh21/ETL-Project-KivaCrowdfundingAnalytics/assets/29482753/dba040fc-c628-4619-9d1c-b9bb28cb73f8)
 
