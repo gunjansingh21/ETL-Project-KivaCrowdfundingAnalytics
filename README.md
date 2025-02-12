@@ -20,16 +20,27 @@ I'm unable to add the dataset here becuase of the size. The size of the dataset 
 
  - **Azure Data Factory**: Azure Data Factory (ADF) is a fully managed, serverless data integration solution for ingesting, preparing, and transforming all your data at scale. In this project, we are migrating the data from SQL server (source) to Azure DataLake Storage Gen2 (sink). For the creation of the pipeline for data movement, we are using three activities - Lookup activity (), ForEach activity () and copy activity.
 
- - **Azure Data Lake Storage Gen2** : This is the storage account where we are storing the data coming from our sorce. The data ingested here is in raw format. Azure Data Lake Storage Gen2 provides a scalable and secure platform for storing large volumes of data. It enables us to manage, access. and analyze data effectively. We'll be storing the data in three layers.
-   - BRONZE : This is where the raw format of the data will be stored
-   - SILVER : This is where the data will be stored after first level of transformations.
-   - GOLD : This is where the data will be stored after second level of transformations.
+ - **Azure Data Lake Storage Gen2** : This is the storage account where we store the data coming from our source, ingested in its raw format. Azure Data Lake Storage Gen2 offers a scalable and secure platform for managing large volumes of data, enabling effective access and analysis.
 
- - **Azure Databricks**: Azure Databricks is a fast, scalable, and collaborative Apache Spark-based analytics platform provided by Microsoft Azure. It combines Apache Spark’s capabilities with the comfort and simplicity of a fully managed cloud service. For data transformation like changing or modifying the schema of the tables, changing and modifying few columns we have leveraged Azure Databricks with PySpark. In this step, we are using Azure Databricks build on Apache Spark and we are using PySPark to write the transformations in the Notebook. We can then execute the Notebook that will automatically spin up the spark cluster and provide you the necessary compute to carry out your data transformations. But before transformations, make sure to provide necessary permissions for your Databricks workspace to connect with storage account (ADLS Gen2). The transformed data was then stored in different folders in the silver and gold container with respective table names.
+We will organize the data into three layers:
 
- - **Azure Synapse Analytics** : We have used Azure Synapse Analytics to gain some valuable insights from the transformed data and performed some visualisations on top of the transformed data in gold container. I created a lake database by accessing the files on ADLS Gen2. Once the database was created, I then created a notebook to peform some analytics on the data and created some charts and graphs out of it. Azure Synapse Analytics is a scalable and cloud-based data warehousing solution from Microsoft. It is the next iteration of the Azure SQL data warehouse. It provides a unified environment by combining the data warehouse of SQL, the big data analytics capabilities of Spark, and data integration technologies to ease the movement of data between both, and from external data sources. Make sure you provide the necessary roles and permissions to your Synapse workspace that it can access the storage account. 
+BRONZE: This layer stores the raw format of the data.
+SILVER: This layer contains the data after the first level of transformations.
+GOLD: This layer holds the data following the second level of transformations.
 
- - **Azure Key Valut** : We have used this service to maintain and keep our secrets encrypted. Azure Key Vault is a cloud service that provides a secure store for secrets. You can securely store keys, passwords, certificates, and other secrets. Azure key vaults are created and managed through the Azure portal. It is widely used for security management and data encryption.
+ - **Azure Databricks**: Azure Databricks is a fast, scalable, and collaborative analytics platform based on Apache Spark, provided by Microsoft Azure. It combines the power of Apache Spark with the ease of a fully managed cloud service.
+
+For data transformations, such as modifying table schemas and adjusting specific columns, we leverage Azure Databricks alongside PySpark. In this step, we utilize Azure Databricks built on Apache Spark, using PySpark to write our transformations in a notebook. Executing the notebook automatically spins up the Spark cluster, providing the necessary compute resources for our data transformations.
+
+Before proceeding with the transformations, it’s essential to ensure that your Databricks workspace has the required permissions to connect to the Azure Data Lake Storage (ADLS) Gen2. The transformed data is then stored in separate folders within the silver and gold containers, organized by respective table names.
+
+ - **Azure Synapse Analytics** : We have utilized Azure Synapse Analytics to derive valuable insights from the transformed data and perform visualizations based on the data stored in the gold container. I created a lake database by accessing the files in ADLS Gen2. Once the database was established, I developed a notebook to conduct analytics on the data and create various charts and graphs.
+
+Azure Synapse Analytics is a scalable, cloud-based data warehousing solution from Microsoft and represents the next iteration of Azure SQL Data Warehouse. It offers a unified environment by integrating SQL data warehousing, big data analytics capabilities with Spark, and data integration technologies, facilitating seamless movement of data between these components and external sources.
+
+It's essential to ensure that the necessary roles and permissions are granted to your Synapse workspace, allowing it to access the storage account.
+
+ - **Azure Key Valut** : We have utilized Azure Key Vault to securely manage and encrypt our secrets. Azure Key Vault is a cloud service that provides a secure repository for storing keys, passwords, certificates, and other sensitive information. Key vaults are created and managed through the Azure portal, making it a widely used solution for security management and data encryption.
 
 # Project Overiew
 
