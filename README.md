@@ -20,13 +20,11 @@ I'm unable to add the dataset here becuase of the size. The size of the dataset 
 
  - **Azure Data Factory**: Azure Data Factory (ADF) is a fully managed, serverless data integration solution for ingesting, preparing, and transforming all your data at scale. In this project, we are migrating the data from SQL server (source) to Azure DataLake Storage Gen2 (sink). For the creation of the pipeline for data movement, we are using three activities - Lookup activity (), ForEach activity () and copy activity.
 
- - **Azure Data Lake Storage Gen2** : This is the storage account where we store the data coming from our source, ingested in its raw format. Azure Data Lake Storage Gen2 offers a scalable and secure platform for managing large volumes of data, enabling effective access and analysis.
+ - **Azure Data Lake Storage Gen2** : This is the storage account where we store the data coming from our source, ingested in its raw format. Azure Data Lake Storage Gen2 offers a scalable and secure platform for managing large volumes of data, enabling effective access and analysis. We will organize the data into three layers:
 
-We will organize the data into three layers:
-
-BRONZE: This layer stores the raw format of the data.
-SILVER: This layer contains the data after the first level of transformations.
-GOLD: This layer holds the data following the second level of transformations.
+   **BRONZE**: This layer stores the raw format of the data.
+   **SILVER**: This layer contains the data after the first level of transformations.
+   **GOLD**: This layer holds the data following the second level of transformations.
 
  - **Azure Databricks**: Azure Databricks is a fast, scalable, and collaborative analytics platform based on Apache Spark, provided by Microsoft Azure. It combines the power of Apache Spark with the ease of a fully managed cloud service.
 
